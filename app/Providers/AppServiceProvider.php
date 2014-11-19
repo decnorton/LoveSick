@@ -1,5 +1,7 @@
-<?php namespace App\Providers;
+<?php namespace LoveSick\Providers;
 
+use Config;
+use Facebook\FacebookSession;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -11,7 +13,11 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+		FacebookSession::setDefaultApplication(
+			Config::get('services.facebook.client_id'),
+			Config::get('services.facebook.client_secret')
+		);
+
 	}
 
 	/**

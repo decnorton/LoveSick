@@ -1,95 +1,62 @@
-<?php namespace App\Http\Controllers;
+<?php namespace LoveSick\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use LoveSick\Http\Auth\AuthenticateUser;
+use LoveSick\Http\Auth\AuthenticateUserListener;
+use LoveSick\Http\Requests\LoginRequest;
+use LoveSick\Http\Requests\RegisterRequest;
+use LoveSick\User;
 
-class AuthController extends Controller {
-
-	/**
-	 * The Guard implementation.
-	 *
-	 * @var Guard
-	 */
-	protected $auth;
-
-	/**
-	 * Create a new authentication controller instance.
-	 *
-	 * @param  Guard  $auth
-	 * @return void
-	 */
-	public function __construct(Guard $auth)
-	{
-		$this->auth = $auth;
-
-		$this->middleware('guest', ['except' => 'getLogout']);
-	}
-
-	/**
-	 * Show the application registration form.
-	 *
-	 * @return Response
-	 */
-	public function getRegister()
-	{
-		return view('auth.register');
-	}
-
-	/**
-	 * Handle a registration request for the application.
-	 *
-	 * @param  RegisterRequest  $request
-	 * @return Response
-	 */
-	public function postRegister(RegisterRequest $request)
-	{
-		// Registration form is valid, create user...
-
-		$this->auth->login($user);
-
-		return redirect('/');
-	}
+/**
+ * Class AuthController
+ * @package LoveSick\Http\Controllers
+ */
+class AuthController extends Controller implements AuthenticateUserListener {
 
 	/**
 	 * Show the application login form.
 	 *
+	 * @param AuthenticateUser $auth
+	 * @param Request $request
 	 * @return Response
 	 */
-	public function getLogin()
+	public function getLogin(AuthenticateUser $auth, Request $request)
 	{
-		return view('auth.login');
+		return $auth->execute($request->has('code'), $this);
+	}
+
+
+	/**
+	 * @param User $user
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|mixed
+	 */
+	public function onLoggedIn(User $user)
+	{
+		return redirect('/');
 	}
 
 	/**
-	 * Handle a login request to the application.
-	 *
-	 * @param  LoginRequest  $request
-	 * @return Response
-	 */
-	public function postLogin(LoginRequest $request)
+	 * @param Guard $auth
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+	public function getLogout(Guard $auth)
 	{
-		if ($this->auth->attempt($request->only('email', 'password')))
-		{
-			return redirect('/');
-		}
-
-		return redirect('/auth/login')->withErrors([
-			'email' => 'These credentials do not match our records.',
-		]);
-	}
-
-	/**
-	 * Log the user out of the application.
-	 *
-	 * @return Response
-	 */
-	public function getLogout()
-	{
-		$this->auth->logout();
+		$auth->user()->removeFacebookAccessTokens();
+		$auth->logout();
 
 		return redirect('/');
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function onLoginFailed()
+	{
+		return redirect('')->withErrors([
+			'facebook' => 'Facebook login failed'
+		]);
+	}
 }

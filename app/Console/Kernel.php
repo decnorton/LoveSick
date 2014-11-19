@@ -1,4 +1,4 @@
-<?php namespace App\Console;
+<?php namespace LoveSick\Console;
 
 use Exception;
 use Illuminate\Console\Scheduling\Schedule;
@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		'App\Console\Commands\InspireCommand',
+		'LoveSick\Console\Commands\InspireCommand',
 	];
 
 	/**

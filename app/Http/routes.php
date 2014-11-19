@@ -24,6 +24,18 @@ $router->get('/', 'HomeController@index');
 |
 */
 
-$router->controller('auth', 'AuthController');
-
 $router->controller('password', 'PasswordController');
+
+
+get('/', function () {
+    if (Auth::check())
+        return 'Welcome back, ' . Auth::user()->email;
+
+    return 'Hi guest. ' . link_to('login', 'Login with Facebook');
+});
+
+
+get('login', 'AuthController@getLogin');
+get('logout', 'AuthController@getLogout');
+
+get('calculate', 'LoveSicknessController@calculate');

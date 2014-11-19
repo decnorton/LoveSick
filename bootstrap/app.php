@@ -28,18 +28,25 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
 	'Illuminate\Contracts\Http\Kernel',
-	'App\Http\Kernel'
+	'LoveSick\Http\Kernel'
 );
 
 $app->singleton(
 	'Illuminate\Contracts\Console\Kernel',
-	'App\Console\Kernel'
+	'LoveSick\Console\Kernel'
 );
 
 $app->singleton(
 	'Illuminate\Contracts\Debug\ExceptionHandler',
-	'App\Exceptions\Handler'
+	'LoveSick\Exceptions\Handler'
 );
+
+$env = $app->detectEnvironment(function()
+{
+	$env = getenv('APP_ENV');
+
+	return ($env == 'homestead' ? 'local' : $env) ?: 'production';
+});
 
 /*
 |--------------------------------------------------------------------------

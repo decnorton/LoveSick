@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -113,9 +113,9 @@ return [
 		/*
 		 * Application Service Providers...
 		 */
-		'App\Providers\AppServiceProvider',
-		'App\Providers\EventServiceProvider',
-		'App\Providers\RouteServiceProvider',
+		'LoveSick\Providers\AppServiceProvider',
+		'LoveSick\Providers\EventServiceProvider',
+		'LoveSick\Providers\RouteServiceProvider',
 
 		/*
 		 * Laravel Framework Service Providers...
@@ -140,6 +140,12 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
+
+		'Illuminate\Html\HtmlServiceProvider',
+
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+
+		'Laravel\Socialite\SocialiteServiceProvider'
 
 	],
 
@@ -199,6 +205,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
+		'Socialite' => 'Laravel\Socialite\Facades\Socialite'
 	],
 
 ];

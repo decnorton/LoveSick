@@ -1,4 +1,4 @@
-<?php namespace App\Http;
+<?php namespace LoveSick\Http;
 
 use Exception;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
