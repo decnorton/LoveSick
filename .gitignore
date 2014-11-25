@@ -1,2 +1,5 @@
 friends.png
 friends.json
+
+node_modules/
+results/*

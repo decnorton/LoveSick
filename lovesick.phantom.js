@@ -15,7 +15,7 @@ featureMap = {
 function has(feature) {
   var prop = featureMap[feature];
   return isFunction(proto[prop]);
-}
+};
 
 // check for missing features
 if (!has('function-bind')) {
@@ -126,7 +126,7 @@ page.onLoadFinished = function () {
                     console.log('Finished scrolling');
                     onFinishedScrolling();
                 }
-            }, 1000);
+            }, 2000);
         };
 
         scroll();
@@ -146,6 +146,8 @@ page.onLoadFinished = function () {
 };
 
 var login = function (page) {
+    console.log('Logging in as ' + email);
+
     page.evaluate(function(email, password) {
         document.querySelector("input[name='email']").value = email;
         document.querySelector("input[name='pass']").value = password;
@@ -190,7 +192,18 @@ var getRelationshipStatusForFriends = function (links) {
                 page.open(url, function () {
                     var inRelationship = page.evaluate(function () {
                         var relationship = document.querySelector('[data-pnref="rel"]');
-                        return relationship != null;
+
+                        if (relationship != null) {
+                            var relationshipType = document.querySelector('._173e._50f8._50f3');
+
+                            if (relationshipType != null) {
+                                return relationshipType.innerHTML;
+                            }
+
+                            return 'In relationship';
+                        }
+
+                        return 'Single';
                     });
 
                     console.log('Loaded: ', url);
@@ -208,7 +221,7 @@ var getRelationshipStatusForFriends = function (links) {
     }
 
     queue.setOnCompleteListener(function () {
-        fs.write('friends.json', JSON.stringify(friends), 'w');
+        fs.write('results/' + email + '.json', JSON.stringify(friends), 'w');
         phantom.exit();
     });
 

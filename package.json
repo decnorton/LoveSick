@@ -1,0 +1,12 @@
+{
+  "name": "lovesick",
+  "description": "A PhantomJS script to gather relationship status of your Facebook friends",
+  "version": "0.1.0",
+  "devDependencies": {},
+  "dependencies": {
+    "node-notifier": "^4.0.2",
+    "optimist": "^0.6.1",
+    "phantomjs": "^1.9.12",
+    "prompt": "^0.2.14"
+  }
+}
